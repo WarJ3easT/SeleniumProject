@@ -1,4 +1,4 @@
-package com.cybertek.day05_css_xpath_junit5;
+package com.cybertek.tests.day05_css_xpath_junit5;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
