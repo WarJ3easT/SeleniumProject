@@ -4,9 +4,11 @@ import com.cybertek.utility.BrowserUtil;
 import com.cybertek.utility.TestBase;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ActionsClassTest extends TestBase {
@@ -50,5 +52,84 @@ public class ActionsClassTest extends TestBase {
 
     }
 
+    @Test
+    public void testDragAndDrop(){
+        driver.get("https://demos.telerik.com/kendo-ui/dragdrop/index");
+        BrowserUtil.waitFor(2);
+
+        WebElement smallCircle = driver.findElement(By.id("draggable"));
+        WebElement biggerCircle = driver.findElement(By.id("droptarget"));
+
+        //drag
+        Actions actions = new Actions(driver);
+        actions.dragAndDrop(smallCircle, biggerCircle).perform();
+
+        BrowserUtil.waitFor(2);
+
+        assertEquals("You did great!", biggerCircle.getText());
+
+
+
+
+
+    }
+
+    @Test
+    public void testKeyboardAction(){
+      // navigate to google.com
+      // hold down to shift enter text "i love selenium"
+      //release the shift
+      // enter text "i love selenium
+      // hold down to command on mac enter "A"
+      // release the command
+      //then hit backspace to delete
+      driver.get(" https://www.google.com");
+      // locate searchBox using name value q
+        WebElement searchBox = driver.findElement(By.name("q"));
+        // create Actions class instance
+        Actions actions = new Actions(driver);
+        //keyDown method for holding down to certain modifier key like Control, SHIFT and so on
+        //keyUp method for releasing what you are holding down to
+        //sendKeys method of Actions class is for pressing key that provided
+        //pause method Actions class is for pausing in between actions in milliseconds
+
+        // this is enough yo demonstraight
+      //  actions.keyDown(Keys.SHIFT).sendKeys("  love selenium")
+      //          .pause(2000).keyUp(Keys.SHIFT)
+      //          .sendKeys(" i love selenium").pause(2000)
+      //          .keyDown(Keys.COMMAND).sendKeys("A") // command +a on mac will select all text
+      //          .perform();
+
+        // this is way way way more than enough to demonstraight you can take keyboard actions
+        actions.keyDown(Keys.SHIFT).sendKeys("i love selenium")
+                .pause(2000).keyUp(Keys.SHIFT)
+                .sendKeys(" i love selenium").pause(2000)
+                .keyDown(Keys.COMMAND).sendKeys("A") // command +a on mac will select all text
+                .keyDown(Keys.COMMAND).pause(2000)
+                .sendKeys(Keys.BACK_SPACE)
+                .pause(2000)
+                .perform();
+
+
+    }
+
+    @Test
+    public void testDoubleClick(){
+        //navigate here
+        //https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_ondblclick
+        //double click on paragraph
+        //then assert the new paragraph whit text "Hello world" displayed
+        //both of the elements are under iframe with id iframeResult
+        driver.get("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_ondblclick");
+        BrowserUtil.waitFor(2);
+        //both elements are under the frame , so switch into it first
+        driver.switchTo().frame("iframeResult");
+        WebElement pElm1 = driver.findElement(By.xpath("//p[.='Double-click this paragraph to trigger a function.']"));
+        // in order to double-click we will use actions class
+        Actions actions = new Actions(driver);
+        actions.doubleClick(pElm1).perform();//this is how we double-click
+
+        BrowserUtil.waitFor(2);
+    }
 
 }
